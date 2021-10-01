@@ -4,10 +4,10 @@ import {
     Button
 } from 'native-base';
 import FieldWrapperForm from '../FieldWrapperForm';
+import Localization from '../../../localization/localization-en';
 
 const PasswordForm = ({ formikProps, formikKey, label, placeholder, showButton, ...rest }) => {
     const [show, setShow] = React.useState(false)
-
     const handleClick = () => setShow(!show)
     return (
         <FieldWrapperForm formikProps={formikProps} formikKey={formikKey} label={label}>
@@ -20,7 +20,7 @@ const PasswordForm = ({ formikProps, formikKey, label, placeholder, showButton, 
                 overflow="visible"
                 InputRightElement={showButton &&
                     <Button roundedLeft="0" onPress={handleClick}>
-                        {show ? "Hide" : "Show"}
+                        {show ? Localization["passwordHideBtn"] : Localization["passwordShowBtn"]}
                     </Button>
                 }
                 {...rest}

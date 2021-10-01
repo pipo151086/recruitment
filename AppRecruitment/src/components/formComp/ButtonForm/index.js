@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'native-base';
 
+
 const ButtonForm = ({ formikProps, title, titleWhileSubmitting, ...rest }) => {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     React.useEffect(() => setIsSubmitting(formikProps.isSubmitting), [formikProps.isSubmitting])
