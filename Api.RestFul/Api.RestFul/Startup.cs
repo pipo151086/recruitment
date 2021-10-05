@@ -14,6 +14,10 @@ using Api.RestFul.Models;
 using Api.RestFul.Repositories;
 using AutoMapper;
 using Api.RestFul.Services;
+using Api.Core.Auth;
+using Api.Core.Auth.Jwt;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.RestFul
 {
@@ -29,14 +33,18 @@ namespace Api.RestFul
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             
+
             services.AddDbContext<TestDevicesContext>();
             services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IDeviceService, DeviceService>();
-
-
+            services.AddScoped<ISecurityService, SecurityService>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
+            services.AddCusJwt();
 
         }
 
@@ -53,6 +61,8 @@ namespace Api.RestFul
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

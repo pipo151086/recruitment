@@ -1,0 +1,16 @@
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.AssemblyInfoInputs.cache
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.AssemblyInfo.cs
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.csproj.CoreCompileInputs.cache
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\bin\Debug\netcoreapp3.1\Api.Core.deps.json
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\bin\Debug\netcoreapp3.1\Api.Core.dll
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\bin\Debug\netcoreapp3.1\Api.Core.pdb
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.dll
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.pdb
+D:\Pipo151086\recruitment\Api.Core\builds\netcoreapp3.1\Api.Core.deps.json
+D:\Pipo151086\recruitment\Api.Core\builds\netcoreapp3.1\Api.Core.dll
+D:\Pipo151086\recruitment\Api.Core\builds\netcoreapp3.1\Api.Core.pdb
+D:\Pipo151086\recruitment\builds\netcoreapp3.1\Api.Core.deps.json
+D:\Pipo151086\recruitment\builds\netcoreapp3.1\Api.Core.dll
+D:\Pipo151086\recruitment\builds\netcoreapp3.1\Api.Core.pdb
+D:\Pipo151086\recruitment\Api.Core\Api.Core\Api.Core\obj\Debug\netcoreapp3.1\Api.Core.csproj.AssemblyReference.cache
