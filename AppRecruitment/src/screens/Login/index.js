@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import LottieView from 'lottie-react-native';
 
 import Localization from '../../localization/localization-en'
-
+import { Auth } from '../../comunication/security'
 
 
 // Color Switch Component
@@ -55,6 +55,7 @@ const Login = () => {
         }}
         //enableReinitialize
         onSubmit={async values => {
+          console.log(Auth);
           console.log("Enter Submiting", values);
           debugger
           console.log("Exit Submiting", values);

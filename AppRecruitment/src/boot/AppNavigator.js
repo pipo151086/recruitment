@@ -69,9 +69,20 @@ const AppDrawer = ({ props, style, initialView }) => {
 }
 
 
+import { AppContext } from '../providers/index';
+import { getInsertContext } from '../database/common/handler';
+
+const getSessionFromDB = async () => {
+    let globalContext = await getInsertContext();
+    if (globalContext) {
+        let context = JSON.parse(globalContext.context);
+        return context;
+    }
+    return undefined;
+}
 
 const AppNavigator = () => {
-
+    const { globalSession, setGlobalSession } = useContext(AppContext);
 
     const config = {
         useSystemColorMode: false,
@@ -80,7 +91,22 @@ const AppNavigator = () => {
 
     const customTheme = extendTheme({ config });
     React.useEffect(() => {
-        SplashScreen.hide();
+        const SessionValidation = async () => {
+            let context = await getSessionFromDB();
+            await setGlobalSession(context);
+
+            //setIsLoading(false);
+            if (context && context.session) {
+
+            } else {
+
+            }
+
+            SplashScreen.hide();
+        };
+
+        SessionValidation();
+
     });
 
 
