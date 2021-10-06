@@ -1,0 +1,1 @@
+export { default as LocalizationEn } from './localization-en';
