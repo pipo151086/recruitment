@@ -46,7 +46,7 @@ function ToggleDarkMode({ selectTheme, setSelectTheme }) {
 }
 
 const Login = () => {
-  const { themeApp, setThemeApp, changeTheme } = useContext(AppContext);
+  const { themeApp, setThemeApp, changeTheme, setGlobalSession } = useContext(AppContext);
   return (
     <ThemeView>
       <View style={{ width: "100%", height: "50%", alignItems: "center", justifyContent: "center" }}>
@@ -69,13 +69,17 @@ const Login = () => {
               jwt: signInResult.jwt,
             }
           }
-          
+
           await updateContext({
             context: JSON.stringify(newContext),
             theme: themeApp,
             lastTimeAccessed: moment(new Date()).format('YYYY-MM-DD h:mm:ss'),
           });
-          
+          setGlobalSession({
+            ...newContext,
+            theme: themeApp,
+            lastTimeAccessed: moment(new Date()).format('YYYY-MM-DD h:mm:ss')
+          });
           console.log("Exit Submiting", values);
         }}
         validationSchema={yup.object().shape({
