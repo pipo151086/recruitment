@@ -2,12 +2,13 @@
   "profiles": {
     "Api.RestFul": {
       "commandName": "Project",
-    //  "launchBrowser": true,
-  //    "launchUrl": "weatherforecast",
+      //"launchBrowser": true,
+      //"launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5000"
+      //"applicationUrl": "http://localhost:5000"
+      "applicationUrl": "http://10.10.0.50:5000"
     }    
   }
 }

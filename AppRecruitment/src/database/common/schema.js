@@ -6,6 +6,7 @@ export default [
     columns: [
       { name: 'context', type: 'string' },
       { name: 'lastTimeAccessed', type: 'string' },
+      { name: 'theme', type: 'string' },      
     ],
   })
 ];

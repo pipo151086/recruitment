@@ -19,6 +19,5 @@ global.database = new Database({
     adapter,
     modelClasses: [
         ...Object.values(contextModels)
-    ],
-    actionsEnabled: true,
+    ]    
 });

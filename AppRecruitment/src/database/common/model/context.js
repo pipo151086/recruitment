@@ -10,4 +10,7 @@ export default class Context extends Model {
 
   @field('lastTimeAccessed')
   lastTimeAccessed;
+
+  @field('theme')
+  theme;
 }

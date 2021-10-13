@@ -3,8 +3,6 @@ import defaultUrl from '../../settings'
 
 const securityUrl = `${defaultUrl}security/`;
 
-export const Auth = async (args) => {
-    debugger;
-    return await fetchPostService('post', securityUrl, args);
-}
+export const Auth = async (args) => await fetchPostService('post', `${securityUrl}Login`, args);
+
 
