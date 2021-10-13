@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, Animated, Image } from 'react-native';
-import { Text, CheckIcon, CloseIcon, Input, Button } from 'native-base';
+import { Text, CheckIcon, CloseIcon, Input, Button, Modal, Popover, Checkbox } from 'native-base';
 import { GetAll } from '../../comunication/devices';
 import { useFocusEffect } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
@@ -10,7 +10,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const DeviceList = () => {
   const [devices, setDevices] = useState([])
-  const [filteredDevices, setFilteredDevices] = useState([])
+  const [filteredDevices, setFilteredDevices] = useState([]);
+  const [onlineFilter, setOnlineFilter] = useState(true);
+  const [offlineFilter, setOfflineFilter] = useState(true);
+  const [wordFilter, setWordFilter] = useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -18,13 +21,32 @@ const DeviceList = () => {
         let result = await GetAll();
         setDevices(result);
         setFilteredDevices(result);
-        console.log(result[0])
       }
       fetchDevices();
     }, [])
   );
 
   const scrollY = React.useRef(new Animated.Value(0)).current
+
+
+  useEffect(() => {
+    if (devices.length > 0) {
+      let fConStatus = devices;
+      if (onlineFilter && !offlineFilter)
+        fConStatus = devices.filter(dev => dev.connected === true)
+      if (!onlineFilter && offlineFilter)
+        fConStatus = devices.filter(dev => dev.connected === false)
+
+      let finalFilter = fConStatus;
+
+      if (wordFilter.length > 0 && !isNaN(wordFilter)) {
+        finalFilter = fConStatus.filter(device => device.location === +wordFilter || device.parentLocation === +wordFilter)
+      }
+      setFilteredDevices(finalFilter);
+    }
+  }, [onlineFilter, offlineFilter, wordFilter])
+
+
 
   return (
     <>
@@ -42,30 +64,68 @@ const DeviceList = () => {
         />
       </View>
 
-      <View style={{
-        width: '100%', position: "absolute", bottom: 50,
-        justifyContent: 'center', alignItems: 'center'
-      }}>
-        <View style={{
-          backgroundColor: 'white', width: '90%', flexDirection: 'row', borderRadius: 50, overflow: 'hidden'
-        }}>
-          <Input variant="rounded" size="md" placeholder="Filter" style={{ width: '100%', color: '#000' }}
+      <Popover
+        trigger={(triggerProps) => {
+          return (
+            <View style={{
+              width: '100%', position: "absolute", bottom: 50,
+              justifyContent: 'center', alignItems: 'center'
+            }}>
+              <View style={{
+                backgroundColor: 'white', width: '90%', flexDirection: 'row', borderRadius: 50, overflow: 'hidden'
+              }}>
+                <Input variant="rounded" size="md" placeholder="Location / Parent Location"
+                  style={{ width: '100%', color: '#000' }}
+                  keyboardType="decimal-pad"
+                  onChangeText={val => {
+                    setWordFilter(val)
+                  }}
+                  onBlur={val => {
+                    setWordFilter(val)
+                  }}
+                  value={wordFilter}
+                />
+                <Button {...triggerProps}
+                  style={{
+                    flex: 1, position: "absolute", right: 0, width: '15%', height: '100%'
+                  }}
+                  leftIcon={
+                    <Icon
+                      name={"filter"}
+                      size={20}
+                      color={'#fff'}
+                    />
+                  }
+                />
+              </View>
+            </View>
+          )
+        }}
+      >
+        <Popover.Content accessibilityLabel="Delete Customerd" w="56">
+          <Popover.Arrow />
+          {/*<Popover.CloseButton />*/}
+          <Popover.Header>Filter Options</Popover.Header>
+          <Popover.Body>
+            Select which fields you want to filter:
+          </Popover.Body>
 
-          />
-          <Button
-            style={{
-              flex: 1, position: "absolute", right: 0, width: '15%', height: '100%'
-            }}
-            leftIcon={
-              <Icon
-                name={"filter"}
-                size={20}
-                color={'#fff'}
-              />
-            }
-          />
-        </View>
-      </View>
+          <Popover.Footer justifyContent="flex-end">
+
+            <View style={{ marginHorizontal: 10 }}>
+              <Checkbox value="online" isChecked={onlineFilter} onChange={(val) => setOnlineFilter(val)}>Online</Checkbox>
+            </View>
+            <View style={{ marginHorizontal: 10 }}>
+              <Checkbox value="offline" isChecked={offlineFilter} onChange={(val) => setOfflineFilter(val)}>Offline</Checkbox>
+            </View>
+          </Popover.Footer>
+
+        </Popover.Content>
+      </Popover>
+
+
+
+
     </>
   )
 }

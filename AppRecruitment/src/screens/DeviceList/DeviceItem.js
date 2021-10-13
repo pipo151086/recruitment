@@ -53,11 +53,12 @@ const DeviceItem = ({ item, index, scrollY }) => {
             </View>
 
             <View style={{ flex: 1 }}>
-                <Text style={{ color: '#000' }}>{item.id}</Text>
+                {/*<Text style={{ color: '#000' }}>{item.id}</Text>*/}
                 <Text style={{ color: '#000' }}>Status:
                     <Text style={{ color: item.connected ? 'green' : 'red' }}>{item.connected ? `  Online` : `  Offline`}</Text>
                 </Text>
-                <Text style={{ color: '#000' }}>{`location:  ${item.location}`}</Text>
+                <Text style={{ color: '#000' }}>{`Parent location:  ${item.parentLocation}`}</Text>
+                <Text style={{ color: '#000' }}>{`Location:  ${item.location}`}</Text>
                 <Text style={{ color: '#000' }}>{`Mac:  ${item.macAddress}`}</Text>
                 <Text style={{ color: '#000' }}>{`Signal:  ${item.signal}`}</Text>
                 <Text style={{ color: '#000' }}>{`Last Update:  ${item.updatedAt}`}</Text>
