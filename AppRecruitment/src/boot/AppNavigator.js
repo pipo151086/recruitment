@@ -132,10 +132,7 @@ const AppNavigator = () => {
     React.useEffect(() => {
         SessionValidation();
     }, []);
-
-
-
-
+   
     if (!isLoading)
         return (
             <NativeBaseProvider theme={customTheme} >

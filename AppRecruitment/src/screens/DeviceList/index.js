@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { ProgressChart } from "react-native-chart-kit";
 import DeviceItem from './DeviceItem';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import LottieView from 'lottie-react-native';
 
 const DeviceList = () => {
   const [devices, setDevices] = useState([])
@@ -14,6 +14,7 @@ const DeviceList = () => {
   const [onlineFilter, setOnlineFilter] = useState(true);
   const [offlineFilter, setOfflineFilter] = useState(true);
   const [wordFilter, setWordFilter] = useState('');
+  const [idLoading, setIdLoading] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -21,6 +22,7 @@ const DeviceList = () => {
         let result = await GetAll();
         setDevices(result);
         setFilteredDevices(result);
+        setIdLoading(false);
       }
       fetchDevices();
     }, [])
@@ -28,8 +30,8 @@ const DeviceList = () => {
 
   const scrollY = React.useRef(new Animated.Value(0)).current
 
-
   useEffect(() => {
+    setIdLoading(true);
     if (devices.length > 0) {
       let fConStatus = devices;
       if (onlineFilter && !offlineFilter)
@@ -43,9 +45,19 @@ const DeviceList = () => {
         finalFilter = fConStatus.filter(device => device.location === +wordFilter || device.parentLocation === +wordFilter)
       }
       setFilteredDevices(finalFilter);
+      setIdLoading(false);
     }
   }, [onlineFilter, offlineFilter, wordFilter])
 
+
+  if (idLoading)
+    return (
+      <View style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+        <LottieView
+          style={{ width: "30%", height: "30%", alignItems: "center", justifyContent: "center" }}
+          source={require('../../assets/lottieFiles/9965-loading-spinner.json')} autoPlay loop />
+      </View>
+    );
 
 
   return (
