@@ -3,6 +3,7 @@ package com.apprecruitment;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
+import com.toyberman.RNSslPinningPackage;
 
 public class MainActivity extends ReactActivity {
 

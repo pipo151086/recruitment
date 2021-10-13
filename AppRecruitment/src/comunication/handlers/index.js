@@ -17,7 +17,7 @@ export const fetchPostService = async (
             const temp = encodeObject(body);
             url = url + "?" + temp;
         }
-        debugger;
+        ;
         let jwtToken = "";
         if (
             this.globalSession != undefined &&
@@ -26,8 +26,9 @@ export const fetchPostService = async (
         )
 
             jwtToken = "Bearer " + this.globalSession.session.jwt.accessToken;
-
+        
         return await fetch(url, {
+            disableAllSecurity: true,
             method: met.toUpperCase(),
             timeoutInterval: timeoutInMs ? timeoutInMs : communication_timeout,
             body: isFormData
@@ -62,9 +63,9 @@ export const fetchPostService = async (
                     return defaultError;
                 if (error.status === 400) return error.json();
                 if (error.status === 401) {
-                /*    if (signOutNotAuthorized)
-                        signOutNotAuthorized();
-                    defaultError.message = "UnAuthorized";*/
+                    /*    if (signOutNotAuthorized)
+                            signOutNotAuthorized();
+                        defaultError.message = "UnAuthorized";*/
                     return Promise.reject(error);
                 }
                 else return Promise.reject(error);
@@ -78,8 +79,8 @@ export const fetchPostService = async (
 export const encodeObject = params => {
     let query = [];
     for (let key in params) {
-      let val = encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-      query.push(val);
+        let val = encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+        query.push(val);
     }
     return query.join("&");
-  };
+};

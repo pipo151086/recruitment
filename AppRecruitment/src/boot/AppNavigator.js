@@ -7,14 +7,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import SplashScreen from 'react-native-splash-screen';
-import { NativeBaseProvider, extendTheme } from 'native-base';
+
 //Screens
 
 import Login from "../screens/Login";
 
+import DeviceList from "../screens/DeviceList";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const initialViewNoSesion = "Login";
+const initialViewWithSesion = "DeviceList";
 
 
 const AppLoginStack = () => {
@@ -29,16 +32,24 @@ const AppLoginStack = () => {
     );
 };
 
-
-
-
-
-
+const AppBusinessStack = () => {
+    return (
+        <Stack.Navigator
+            initialRouteName={initialViewWithSesion}
+            //initialRouteName={initialViewNoSesion}
+            screenOptions={{
+                headerShown: false,
+            }}>
+            <Stack.Screen name={initialViewWithSesion} component={DeviceList} />
+            <Stack.Screen name={initialViewNoSesion} component={Login} />
+        </Stack.Navigator>
+    );
+};
 
 const AppDrawer = ({ props, style, initialView }) => {
 
     return (<Drawer.Navigator
-        //hideStatusBar
+        hideStatusBar
         drawerType="slide"
         //overlayColor="transparent"
         //drawerStyle={styles.drawerStyles}
@@ -54,9 +65,9 @@ const AppDrawer = ({ props, style, initialView }) => {
       return <Sidebar {...props} />;
     }}*/
     >
-        <Drawer.Screen name="AppRecruitment">
+        <Drawer.Screen name="App Recruitment">
             {props => (
-                <AppLoginStack
+                <AppBusinessStack
                     {...{
                         props: props,
                         //style: animatedStyle,
@@ -73,54 +84,73 @@ import { AppContext } from '../providers/index';
 import { getInsertContext } from '../database/common/handler';
 
 const getSessionFromDB = async () => {
-    let globalContext = await getInsertContext();
-    if (globalContext) {
-        let context = JSON.parse(globalContext.context);
-        return context;
+    try {
+        let globalContext = await getInsertContext();
+        if (globalContext) {
+            let context = JSON.parse(globalContext.context);
+            return {
+                ...context,
+                theme: globalContext.theme,
+                lastTimeAccessed: globalContext.lastTimeAccessed,
+            };
+        }
+        return undefined;
+    } catch (err) {
+        console.error(err)
     }
-    return undefined;
 }
+import { NativeBaseProvider, extendTheme, useColorMode, useTheme } from 'native-base';
 
 const AppNavigator = () => {
-    const { globalSession, setGlobalSession } = useContext(AppContext);
+    const { globalSession, setGlobalSession, themeApp, setThemeApp } = useContext(AppContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const { colorMode, toggleColorMode } = useColorMode();
+    const [colorModeManager, setColorModeManager] = useState({});
 
     const config = {
         useSystemColorMode: false,
-        initialColorMode: 'dark',
+        initialColorMode: themeApp,
+    };
+    const customTheme = extendTheme({ config });
+
+    const SessionValidation = async () => {
+        let context = await getSessionFromDB();
+        await setGlobalSession(context);
+
+        if (context && context.session) {
+            setThemeApp(context.theme);
+
+        } else {
+
+        }
+
+        //console.log("Entre " , globalSession);
+        SplashScreen.hide();
+        setIsLoading(false);
     };
 
-    const customTheme = extendTheme({ config });
     React.useEffect(() => {
-        const SessionValidation = async () => {
-            let context = await getSessionFromDB();
-            await setGlobalSession(context);
-
-            //setIsLoading(false);
-            if (context && context.session) {
-
-            } else {
-
-            }
-
-            SplashScreen.hide();
-        };
-
         SessionValidation();
+    }, []);
 
-    });
 
 
-    return (
-        <NativeBaseProvider theme={customTheme}>
-            <NavigationContainer>
-                {
-                    //AppDrawer(progress, setProgress, initialView)
-                    AppDrawer(true, () => { }, initialViewNoSesion)
-                    //AppLoginStack()
-                }
-            </NavigationContainer>
-        </NativeBaseProvider>
-    )
+
+    if (!isLoading)
+        return (
+            <NativeBaseProvider theme={customTheme} >
+                <NavigationContainer>
+                    {globalSession && globalSession.session ?
+                        AppDrawer(true, () => { }, initialViewNoSesion)
+                        :
+                        AppLoginStack()
+                    }
+                </NavigationContainer>
+            </NativeBaseProvider>
+        )
+
+
+    return (<></>)
 }
 
 export default AppNavigator;

@@ -195,6 +195,12 @@ dependencies {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
 
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.1"
+
+
+
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
     }

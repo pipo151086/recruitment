@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View } from 'react-native'
 import {
   Text,
@@ -16,22 +16,26 @@ import LottieView from 'lottie-react-native';
 
 import Localization from '../../localization/localization-en'
 import { Auth } from '../../comunication/security'
-
+import { addContext, updateContext } from '../../database/common/handler';
+import moment from 'moment';
+import { AppContext } from '../../providers/index';
 
 // Color Switch Component
-function ToggleDarkMode() {
+function ToggleDarkMode({ selectTheme, setSelectTheme }) {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Center style={{ width: "100%", position: "absolute", bottom: 0 }}>
       <HStack space={2}>
-
         <Text>Dark</Text>
         <MoonIcon size="4" />
         <Switch
-          isChecked={colorMode === 'light' ? true : false}
-          onToggle={toggleColorMode}
+          isChecked={selectTheme === 'light' ? true : false}
+          onToggle={(val) => {
+            setSelectTheme((val === true) ? 'light' : 'dark');
+            toggleColorMode()
+          }}
           aria-label={
-            colorMode === 'light' ? 'switch to dark mode' : 'switch to light mode'
+            selectTheme === 'light' ? 'switch to dark mode' : 'switch to light mode'
           }
         />
         <Text>Light</Text>
@@ -42,6 +46,7 @@ function ToggleDarkMode() {
 }
 
 const Login = () => {
+  const { themeApp, setThemeApp, changeTheme } = useContext(AppContext);
   return (
     <ThemeView>
       <View style={{ width: "100%", height: "50%", alignItems: "center", justifyContent: "center" }}>
@@ -55,9 +60,22 @@ const Login = () => {
         }}
         //enableReinitialize
         onSubmit={async values => {
-          console.log(Auth);
-          console.log("Enter Submiting", values);
-          debugger
+          let signInResult = await Auth(values);
+          let newContext = {
+            session: {
+              userId: signInResult.userId,
+              docNumber: signInResult.userDocNumber,
+              docType: signInResult.userDocType,
+              jwt: signInResult.jwt,
+            }
+          }
+          
+          await updateContext({
+            context: JSON.stringify(newContext),
+            theme: themeApp,
+            lastTimeAccessed: moment(new Date()).format('YYYY-MM-DD h:mm:ss'),
+          });
+          
           console.log("Exit Submiting", values);
         }}
         validationSchema={yup.object().shape({
@@ -68,8 +86,6 @@ const Login = () => {
       >
         {(formikProps) => {
           return (<>
-
-
             <InputForm
               label={Localization["Login.lbl.Username"]}
               formikProps={formikProps}
@@ -90,7 +106,10 @@ const Login = () => {
           </>)
         }}
       </Formik>
-      <ToggleDarkMode />
+      <ToggleDarkMode
+        setSelectTheme={changeTheme}
+        selectTheme={themeApp}
+      />
 
     </ThemeView>
   );
