@@ -55,8 +55,8 @@ const Login = () => {
 
       <Formik
         initialValues={{
-          userName: "",
-          password: ""
+          userName: "demo",
+          password: "demo"
         }}
         //enableReinitialize
         onSubmit={async values => {

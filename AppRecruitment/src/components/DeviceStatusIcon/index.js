@@ -4,8 +4,8 @@ import { CheckIcon, CloseIcon } from 'native-base';
 import { ProgressChart } from "react-native-chart-kit";
 import { Text } from 'native-base';
 
-const DeviceStatusIcon = ({ item, gaugeWidthHeight,imageWidthHeight }) => {
-    
+const DeviceStatusIcon = ({ item, gaugeWidthHeight, imageWidthHeight, gaugeRadius, statusConectionStyle }) => {
+
     const imgStyleConnected = {
         height: imageWidthHeight, width: imageWidthHeight, position: 'absolute',
     }
@@ -27,7 +27,7 @@ const DeviceStatusIcon = ({ item, gaugeWidthHeight,imageWidthHeight }) => {
                 width={gaugeWidthHeight}
                 height={gaugeWidthHeight}
                 strokeWidth={16}
-                radius={32}
+                radius={gaugeRadius ? gaugeRadius : 32}
                 chartConfig={{
                     backgroundGradientFrom: "#fff",
                     backgroundGradientFromOpacity: 0,
@@ -44,7 +44,7 @@ const DeviceStatusIcon = ({ item, gaugeWidthHeight,imageWidthHeight }) => {
                 source={require('../../assets/images/anthena-draw.png')}
                 style={item.connected ? imgStyleConnected : imgStyleDisconnected}
             ></Image>
-            <View style={{ position: 'absolute', top: 0, left: 0 }}>
+            <View style={{ position: 'absolute', top: 0, left: 0, ...statusConectionStyle }}>
                 {item.connected ?
                     (<CheckIcon size="5" mt="0.5" color="emerald.500" />) :
                     (<CloseIcon size="4" color="danger.700" />)
