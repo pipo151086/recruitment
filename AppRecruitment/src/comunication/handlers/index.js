@@ -3,7 +3,7 @@ import { fetch } from "react-native-ssl-pinning";
 //import signOutNotAuthorized from '@/utils/unauthorized';
 
 const communication_timeout = 240 * 1000; //milliseconds
-const certs = ["cedr5"];
+const certs = ["cedr5", "glim"];
 
 export const fetchPostService = async (
     met,
@@ -28,7 +28,7 @@ export const fetchPostService = async (
             jwtToken = "Bearer " + this.globalSession.session.jwt.accessToken;
         
         return await fetch(url, {
-            disableAllSecurity: true,
+            //disableAllSecurity: true,
             method: met.toUpperCase(),
             timeoutInterval: timeoutInMs ? timeoutInMs : communication_timeout,
             body: isFormData

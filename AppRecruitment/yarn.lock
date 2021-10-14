@@ -6648,7 +6648,7 @@ react-native-splash-screen@^3.2.0:
   resolved "http://10.10.1.109:4873/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
   integrity sha512-Ls9qiNZzW/OLFoI25wfjjAcrf2DZ975hn2vr6U9gyuxi2nooVbzQeFoQS5vQcbCt9QX5NY8ASEEAtlLdIa6KVg==
 
-react-native-ssl-pinning@^1.5.4:
+react-native-ssl-pinning@^1.5.2:
   version "1.5.4"
   resolved "http://10.10.1.109:4873/react-native-ssl-pinning/-/react-native-ssl-pinning-1.5.4.tgz#e5b07c6c01e6c03c325dc097580bd9a1c2037f6a"
   integrity sha512-cCqnXItnl7u64W7KRw7hIf6jcBeUU4gkpyXQvjtk4JcOZjW86u79ntfGxbGWV7Xtn4/hOOlmTX4DLF+fr5f8dQ==

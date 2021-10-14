@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Animated } from 'react-native';
 import { Text } from 'native-base';
 import DeviceStatusIcon from '../../components/DeviceStatusIcon'
+import moment from 'moment';
 
 const DeviceItem = ({ item, index, scrollY }) => {
-    const ITEM_SIZE = 150 + 30; // 30 Padding + margin
+    let dateShow = item.updatedAt ? moment(new Date(item.updatedAt)).format('MM-DD-YYYY HH:mm') : "N/A";
+    const ITEM_SIZE = 155 + 30; // 30 Padding + margin
     const inputRange = [
         -1,
         0,
@@ -30,7 +32,7 @@ const DeviceItem = ({ item, index, scrollY }) => {
     return (
         <Animated.View style={{
             flexDirection: 'row',
-            height: 150,
+            height: 155,
             margin: 15, borderRadius: 25, padding: 15, backgroundColor: 'rgba(255,255,255,1)',
             shadowColor: "black",
             shadowOffset: {
@@ -43,7 +45,7 @@ const DeviceItem = ({ item, index, scrollY }) => {
             opacity,
             transform: [{ scale }]
         }}>
-            
+
             <View style={{ width: 100 }}>
                 <DeviceStatusIcon
                     item={item}
@@ -61,7 +63,7 @@ const DeviceItem = ({ item, index, scrollY }) => {
                 <Text style={{ color: '#000' }}>{`Location:  ${item.location}`}</Text>
                 <Text style={{ color: '#000' }}>{`Mac:  ${item.macAddress}`}</Text>
                 <Text style={{ color: '#000' }}>{`Signal:  ${item.signal}`}</Text>
-                <Text style={{ color: '#000' }}>{`Last Update:  ${item.updatedAt}`}</Text>
+                <Text style={{ color: '#000' }}>{`Last Update:  ${dateShow}`}</Text>
             </View>
 
         </Animated.View>

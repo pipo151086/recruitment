@@ -12,6 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.toyberman.RNSslPinningPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
