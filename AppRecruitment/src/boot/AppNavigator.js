@@ -13,6 +13,8 @@ import SplashScreen from 'react-native-splash-screen';
 import Login from "../screens/Login";
 
 import DeviceList from "../screens/DeviceList";
+import DeviceDetail from "../screens/DeviceDetail"
+
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -42,6 +44,8 @@ const AppBusinessStack = () => {
             }}>
             <Stack.Screen name={initialViewWithSesion} component={DeviceList} />
             <Stack.Screen name={initialViewNoSesion} component={Login} />
+            <Stack.Screen name={"DeviceDetail"} component={DeviceDetail} />
+
         </Stack.Navigator>
     );
 };
@@ -132,7 +136,7 @@ const AppNavigator = () => {
     React.useEffect(() => {
         SessionValidation();
     }, []);
-   
+
     if (!isLoading)
         return (
             <NativeBaseProvider theme={customTheme} >

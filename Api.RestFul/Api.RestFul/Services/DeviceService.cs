@@ -1,4 +1,5 @@
-﻿using Api.RestFul.Models;
+﻿using Api.RestFul.Dto;
+using Api.RestFul.Models;
 using Api.RestFul.Repositories;
 using System;
 using System.Collections.Generic;
@@ -32,5 +33,44 @@ namespace Api.RestFul.Services
             var deviceList = filterResult.ToList();
             return deviceList;
         }
+
+        public async Task<List<Device>> GetConected()
+        {
+
+            var filterResult = await _deviceRepository.GetAllConected();
+            var deviceList = filterResult.ToList();
+            return deviceList;
+        }
+
+
+        public async Task<List<Device>> GetAlldisConected()
+        {
+
+            var filterResult = await _deviceRepository.GetAlldisConected();
+            var deviceList = filterResult.ToList();
+            return deviceList;
+        }
+
+        public async Task<List<Device>> GetLocationParentLocation(int loc_parLoc)
+        {
+
+            var filterResult = await _deviceRepository.GetLocationParentLocation(loc_parLoc);
+            var deviceList = filterResult.ToList();
+            return deviceList;
+        }
+
+        public async Task<Device> Add(DeviceDto device)
+        {
+            var dev = await _deviceRepository.Add(device);
+            return dev;
+        }
+
+
+        public async Task<bool> Edit(DeviceDto device)
+        {
+            var dev = await _deviceRepository.Edit(device);
+            return dev;
+        }
+
     }
 }

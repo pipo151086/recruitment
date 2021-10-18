@@ -132,4 +132,3 @@ D:\Pipo151086\recruitment\Api.RestFul\Api.RestFul\obj\Debug\netcoreapp3.1\Api.Re
 D:\Pipo151086\recruitment\Api.RestFul\Api.RestFul\obj\Debug\netcoreapp3.1\Api.RestFul.dll
 D:\Pipo151086\recruitment\Api.RestFul\Api.RestFul\obj\Debug\netcoreapp3.1\Api.RestFul.pdb
 D:\Pipo151086\recruitment\Api.RestFul\Api.RestFul\obj\Debug\netcoreapp3.1\Api.RestFul.genruntimeconfig.cache
-D:\Pipo151086\recruitment\Api.RestFul\Api.RestFul\obj\Debug\netcoreapp3.1\Api.RestFul.csproj.AssemblyReference.cache

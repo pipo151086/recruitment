@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, Animated } from 'react-native';
-import { Input, Button, Popover, Checkbox } from 'native-base';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Animated, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Input, Button, Popover, Checkbox, Text } from 'native-base';
+import { AppContext } from '../../providers';
 import { GetAll } from '../../comunication/devices';
 import { useFocusEffect } from '@react-navigation/native';
-import DeviceItem from './DeviceItem';
+//import DeviceItem from './DeviceItem';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import LottieView from 'lottie-react-native';
-import DeviceDetail from './DeviceDetail';
-import DeviceEdit from './DeviceEdit';
+import moment from 'moment';
+import DeviceStatusIcon from '../../components/DeviceStatusIcon'
+import localizationEn from '../../localization/localization-en';
 
-const DeviceList = () => {
-  const [devices, setDevices] = useState([])
+const DeviceList = ({ navigation }) => {
+  const { devices, setDevices } = useContext(AppContext);
   const [filteredDevices, setFilteredDevices] = useState([]);
   const [onlineFilter, setOnlineFilter] = useState(true);
   const [offlineFilter, setOfflineFilter] = useState(true);
   const [wordFilter, setWordFilter] = useState('');
   const [idLoading, setIdLoading] = useState(true);
-  const [visibleDetail, setVisibleDetail] = useState(false);
-  const [clickedItem, setClickedItem] = useState();
-  const [visibleEdit, setVisibleEdit] = useState(false);
-
+  const [sItemIsLoading, setSItemIsLoading] = useState(false);
+  const CONT_SIZE = 125;
+  const ITEM_SIZE = CONT_SIZE + 30; // 30 Padding + margin
 
   useFocusEffect(
     React.useCallback(() => {
       const fetchDevices = async () => {
         let result = await GetAll();
+        let newResult = [];
+        for (let x = 0; x < 10; x++) {
+          newResult = [...newResult, result[x]];
+        }
         setDevices(result);
-        setFilteredDevices(result);
+        setOfflineFilter(false);
         setIdLoading(false);
       }
       fetchDevices();
@@ -34,11 +39,15 @@ const DeviceList = () => {
   );
 
   const scrollY = React.useRef(new Animated.Value(0)).current
-
+  const onScrollEvnt = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: true }
+  )
+  const keyStractor = item => item.id;
   useEffect(() => {
     setIdLoading(true);
-    console.log("Entre al filtro");
     if (devices.length > 0 && (offlineFilter || onlineFilter)) {
+
       let fConStatus = devices;
       if (onlineFilter && !offlineFilter)
         fConStatus = devices.filter(dev => dev.connected === true)
@@ -50,11 +59,100 @@ const DeviceList = () => {
       if (wordFilter.length > 0 && !isNaN(wordFilter)) {
         finalFilter = fConStatus.filter(device => device.location === +wordFilter || device.parentLocation === +wordFilter)
       }
+
       setFilteredDevices(finalFilter);
-     
       setIdLoading(false);
     }
   }, [onlineFilter, offlineFilter, wordFilter])
+
+
+
+
+
+  const DeviceItem = ({ item, index, scrollY, navigation, CONT_SIZE, ITEM_SIZE }) => {
+    let dateShow = item.updatedAt ? moment(new Date(item.updatedAt)).format('MM-DD-YYYY HH:mm') : "N/A";
+    const inputRange = [
+      -1,
+      0,
+      ITEM_SIZE * index,
+      ITEM_SIZE * (index + 2)
+    ];
+    const opacityInputRange = [
+      -1,
+      0,
+      ITEM_SIZE * index,
+      ITEM_SIZE * (index + 0.5)
+    ];
+    const scale = scrollY.interpolate({
+      inputRange,
+      outputRange: [1, 1, 1, 0]
+    })
+    const opacity = scrollY.interpolate({
+      inputRange: opacityInputRange,
+      outputRange: [1, 1, 1, 0]
+    })
+
+    /*if (sItemIsLoading) {
+        return (
+            <View style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}>
+                <LottieView
+                    style={{ width: "30%", height: "30%", alignItems: "center", justifyContent: "center" }}
+                    source={require('../../assets/lottieFiles/9965-loading-spinner.json')} autoPlay loop />
+            </View>
+        );
+    }
+
+    if (!sItemIsLoading)*/
+    return (
+      <TouchableHighlight
+        activeOpacity={0.6}
+        underlayColor="#DDDDDD"
+        onPress={() => {
+          console.log
+          navigation.navigate("DeviceDetail", { item: item });
+        }}
+      >
+        <Animated.View style={{
+          flexDirection: 'row',
+          height: CONT_SIZE,
+          margin: 15, borderRadius: 25, padding: 15, backgroundColor: 'rgba(255,255,255,1)',
+          shadowColor: "black",
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+          shadowOpacity: 0.3,
+          shadowRadius: 20,
+          elevation: 14,
+          opacity,
+          transform: [{ scale }]
+        }}>
+
+          <View style={{ width: 100 }}>
+            <DeviceStatusIcon
+              item={item}
+              gaugeWidthHeight={100}
+              imageWidthHeight={55}
+            />
+          </View>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={{ color: '#000' }}>Status:
+              <Text style={{ color: item.connected ? 'green' : 'red' }}>{item.connected ? localizationEn["Device.lbl.Online"] : localizationEn["Device.lbl.Offline"]}</Text>
+            </Text>
+            <Text style={{ color: '#000' }}>{`${localizationEn["Device.lbl.ParentLocation"]}  ${item.parentLocation}`}</Text>
+            <Text style={{ color: '#000' }}>{`${localizationEn["Device.lbl.Location"]}  ${item.location}`}</Text>
+            <Text style={{ color: '#000' }}>{`${localizationEn["Device.lbl.Signal"]}  ${item.signal}`}</Text>
+            <Text style={{ color: '#000' }}>{`${localizationEn["Device.lbl.LastUpdate"]}  ${dateShow}`}</Text>
+
+          </View>
+
+        </Animated.View>
+
+      </TouchableHighlight>
+    )
+
+  }
+
 
 
   if (idLoading)
@@ -70,15 +168,26 @@ const DeviceList = () => {
     return (
       <>
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
+
           <Animated.FlatList
             data={filteredDevices}
-            keyStractor={item => item.id}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
-            //contentContainerStyle={{backgroundColor: "green"}}
-            renderItem={({ item, index }) => DeviceItem({ item, index, scrollY, visibleDetail, setVisibleDetail, setClickedItem })
+            keyStractor={keyStractor}
+            onScroll={onScrollEvnt}
+            
+            removeClippedSubviews={true}
+            initialNumToRender={10}
+            maxToRenderPerBatch={5}
+            
+            //updateCellsBatchingPeriod={100}
+            renderItem={({ item, index }) => DeviceItem({
+              item,
+              index,
+              scrollY,
+              sItemIsLoading,
+              navigation,
+              CONT_SIZE,
+              ITEM_SIZE
+            })
             }
           />
         </View>
@@ -141,23 +250,6 @@ const DeviceList = () => {
 
           </Popover.Content>
         </Popover>
-
-        {clickedItem &&
-          <>
-            <DeviceDetail
-              devices={devices}
-              item={clickedItem}
-              visibleDetail={visibleDetail}
-              setVisibleDetail={setVisibleDetail}
-            />
-            <DeviceEdit
-              item={clickedItem}
-              setVisibleEdit={setVisibleEdit}
-              visibleEdit={visibleEdit}
-              setVisibleDetail={setVisibleDetail}
-            />
-          </>
-        }
       </>
     )
 }

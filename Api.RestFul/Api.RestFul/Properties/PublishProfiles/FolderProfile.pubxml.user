@@ -5,6 +5,6 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\inetpub\wwwroot\ApiRestful\Api</_PublishTargetUrl>
-    <History>True|2021-10-14T14:12:17.7579430Z;True|2021-10-14T08:53:15.3239302-05:00;</History>
+    <History>True|2021-10-15T22:22:46.9953423Z;True|2021-10-15T16:30:56.8662174-05:00;True|2021-10-15T15:17:08.8763904-05:00;True|2021-10-15T15:15:43.6057037-05:00;True|2021-10-14T09:12:17.7579430-05:00;True|2021-10-14T08:53:15.3239302-05:00;</History>
   </PropertyGroup>
 </Project>

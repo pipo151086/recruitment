@@ -36,7 +36,9 @@ namespace Api.RestFul.Models
 
             modelBuilder.Entity<Device>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
+                entity.HasKey(e => new { e.Id })
+                  .IsClustered(false);
 
                 entity.ToTable("devices");
 

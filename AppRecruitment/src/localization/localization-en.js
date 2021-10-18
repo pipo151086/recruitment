@@ -18,6 +18,7 @@ export default {
 
     "Device.lbl.Online": `  Online`,
     "Device.lbl.Offline": `  Offline`,   
+    "Device.lbl.Status": `Status: `,   
     "Device.lbl.ParentLocation": `Parent location:  `,
     "Device.lbl.Location":  `Location:  `,
     "Device.lbl.Signal":  `Signal:  `,

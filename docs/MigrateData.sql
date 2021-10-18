@@ -16,7 +16,8 @@ create table devices (
 		connected BIT,
 		parent_location INT,
 		updated_at DateTime,
-		signal float
+		signal float,
+		PRIMARY KEY (id)
 )
 
 DECLARE @JSON VARCHAR(MAX)
